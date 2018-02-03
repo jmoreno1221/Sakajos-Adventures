@@ -1,120 +1,113 @@
 pico-8 cartridge // http://www.pico-8.com
 version 16
 __lua__
-
 function _init()
-playerx=20
-playery=496
-playeray=0
-camx=0
-camy=384
-lvl = 0
-solid = false
-allow = false
-gravity=.5
-floor_temp = 0
+
+	playerx=20
+	playery=496
+	playeray=0
+	camx=0
+	camy=384
+	lvl = 0
+	solid = false
+	allow_m = false
+	allow_j = true
+	gravity=.2
+
 end
 
 function _update()
-allow_move()
-if allow then
-solid = solid_tile(playerx, playery)
-if btn(⬅️) then
-	if(solid_tile(playerx-1,playery) ==false) then 
-	playerx-=2
-	end
-end
-if btn(➡️) then
-	if(solid_tile(playerx+8,playery) ==false) then
-	playerx+=2
-	end 
-end
-if btn(⬆️) then
-	if(solid_tile(playerx,playery-1) ==false) then
-	playery-=1
-	end 
-end
-if btn(⬇️) then
-	if(solid_tile(playerx,playery+8) ==false) then
-	playery+=1
-	end 
-end
-else
-playerx = playerx
-playery = playery
-end
-if btnp(🅾️) then
-floor_temp = playery
-	playeray -= 5
-end
-if btn(5) then lvl=0 end
-playery += playeray
-playeray += gravity
-if(playery+16 > 512) then
-playery = 496
-playeray = 0
-end
-if(playery-8 < 264) then
-playery = 272
-playeray = 0
-end
-update_camera(lvl)
 
+	allow_move()
+
+	if allow_m then
+		solid = solid_tile(playerx, playery)
+			if btn(⬅️) then
+				if(solid_tile(playerx-1,playery) ==false) then 
+					playerx-=2
+				end
+			end
+		if btn(➡️) then
+			if(solid_tile(playerx+8,playery) ==false) then
+				playerx+=2
+			end 
+		end
+	end
+	if (btn(🅾️) and allow_j == true) then
+		allow_jump()
+	end
+	playery += playeray
+	playeray += gravity
+	if(playery+16 > 512) then
+		playery = 496
+		playeray = 0
+	end
+	if(playery-8 < 264) then
+		playery = 272
+		playeray = 0
+	end
+	update_camera(lvl)
 end
 
 function _draw()
+
 cls()
 camera(camx,camy)
 draw_background(lvl)
 map(0,0,0,0,128,512)
 draw_player()
 camera()
-print(playeray,0,24,7)
+print(playeray,30,40,8)
+
 end
 
 function draw_background(lvl)
-if lvl==0 then
-rectfill(0,0,127,127,12)
-elseif lvl==1 then
-rectfill(0,0,127,127,13)
+	if lvl==0 then
+		rectfill(0,0,127,127,12)
+	elseif lvl==1 then
+		rectfill(0,0,127,127,13)
+	end
 end
-end
-
-
 
 function draw_player()
-spr(1,playerx,playery)
+	spr(1,playerx,playery)
 end
 
 function update_camera(lvl)
-if lvl==0 and playery < 390 and camy>0 then
-camy = 264
-else
-camy = 384
-end
+	if lvl==0 and playery < 390 and camy>0 then
+		camy = 264
+	else
+		camy = 384
+	end
 end
 
 function solid_tile(x, y)
-local tilex = ((x-(x%8))/8)
-local tiley = ((y-(y%8))/8)
-if(fget(mget(tilex,tiley),0)) then
- return true
-else
- return false
+	local tilex = ((x-(x%8))/8)
+	local tiley = ((y-(y%8))/8)
+		if(fget(mget(tilex,tiley),0)) then
+ 		return true
+		else
+ 		return false
+		end
 end
-
-end
--->8
 function allow_move()
 solid = solid_tile(playerx, playery)
 if(solid_tile(playerx-2,playery) ==false) or
 (solid_tile(playerx+8,playery) ==false) or
 (solid_tile(playerx,playery-1) ==false) or
 (solid_tile(playerx,playery+8) ==false) then
-	allow = true
+	allow_m = true
 else
-allow = false
+allow_m = false
 end
+end
+
+function allow_jump()
+if gravity == .2 then
+allow_j = true
+playery -= 5
+end
+
 end
 __gfx__
 000000000aaaaaa04449444444444444444444499999990990990000007770000555555000000000000000000000000000000000000000000000000000000000
@@ -281,4 +274,8 @@ __map__
 3200000000000000000000000000002200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 3200000000000000000000000000002200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 __sfx__
-01080000130501305013050180501b050200502205022050200502125015050232501b250142501425016250182501b2501b2501b2501b2501b2501b2501c2501505015050150501505000000000000000000000
+000a0000245502255027550295502950011800108002b4002a6003050033500345003550035500355002a5000b8000a8000a800098000880007800088002d8002d80015000150001500000000000000000000000
+000c000016150121500e1500c1500b1500b1500b1500b15014100131000f1000e1000f100131001410014100179000f5501155011550189001990019900199001990016900169001590017900189001990019900
+__music__
+02 01424344
+
