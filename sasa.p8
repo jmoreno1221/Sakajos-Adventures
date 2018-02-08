@@ -24,6 +24,7 @@ function gameinit()
  lvl=0
  camx=0
  camy=384
+ 
 end
 
 function titleinit()
@@ -37,9 +38,10 @@ function _draw()
   -- draw the world
   map(0,0,0,0,128,512)
   -- draw the player
-  spr(pspr,64,110,1,1,pdir==-1)
-  -- titlescreen
-  titleupdate()
+  spr(pspr,px,py,1,1,pdir==-1)
+  -- title screen
+  print("press z to start", 32, 64, 7)
+  
 end
 
 function update_camera(lvl)
