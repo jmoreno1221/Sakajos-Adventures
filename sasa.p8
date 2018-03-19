@@ -16,57 +16,7 @@ if btn(5,0) then
 end
 end
 
-function titledraw()
-print("hello, player",37,36,7)
-spr(64,16,48,12,2)
-spr(76,46,57,3,1)
-spr(92,46,65,3,1)
-spr(96,7,74,14,2)
-spr(1,9,66,1,1)
-print("press x to begin",30,100,7)
-end
 
-function game_init()
-	mode = 1
- ents={}
- bads={}
- enemy_speed=0.01
- score=0
- level=0
- t=0
- mt=0
- bgcolor=0
- cur=mke(3,63,63)
- cur.upd=function(e)
-  cds(e,hero)
-  limit=10
-  if dd>limit then
-   cur.x=hero.x+cos(an)*limit
-   cur.y=hero.y+sin(an)*limit
-  end
-  can=an
- end
- hero=mke(1,63,63)
- hero.ol=true
- hero.upd=function(e)
-  if cdn>0 then
-   cdn-=100
-  end
-  for b in all(bads) do
-   cds(e,b)
-   if dd<8 then
-    xpl(hero)
-   end 
-  end
- end
- cdn=0
- life=16
- cdn2=64
- --bads
- for i=0,8 do
-  sbad()
- end 
-end
 
 function rand(n) return flr(rnd(n)) end
 
@@ -290,6 +240,58 @@ else
   print("level: "..level,90-i,2-i,i*(8+(t/8)%8))
  end
  end
+end
+-->8
+function titledraw()
+print("hello, player",37,36,7)
+print("press x to begin",30,100,7)
+spr(64,16,48,12,2)
+spr(76,46,57,3,1)
+spr(92,46,65,3,1)
+spr(96,7,74,14,2)
+spr(1,9,66,1,1)
+end
+-->8
+function game_init()
+	mode = 1
+ ents={}
+ bads={}
+ enemy_speed=0.01
+ score=0
+ level=0
+ t=0
+ mt=0
+ bgcolor=0
+ cur=mke(3,63,63)
+ cur.upd=function(e)
+  cds(e,hero)
+  limit=10
+  if dd>limit then
+   cur.x=hero.x+cos(an)*limit
+   cur.y=hero.y+sin(an)*limit
+  end
+  can=an
+ end
+ hero=mke(1,63,63)
+ hero.ol=true
+ hero.upd=function(e)
+  if cdn>0 then
+   cdn-=100
+  end
+  for b in all(bads) do
+   cds(e,b)
+   if dd<8 then
+    xpl(hero)
+   end 
+  end
+ end
+ cdn=0
+ life=16
+ cdn2=64
+ --bads
+ for i=0,8 do
+  sbad()
+ end 
 end
 __gfx__
 85555550855555500111111000000000000000000000000000000000000000000777650000000000005555000055550000111110000000000000000000000000
